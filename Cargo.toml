@@ -1,0 +1,4 @@
+[package]
+name = "rustadv"
+version = "0.1.0"
+authors = ["hex <hexaphixylix@yahoo.com>"]
