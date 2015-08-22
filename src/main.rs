@@ -39,28 +39,25 @@ impl EquipSlots {
 			neck: None,
 		}
 	}
-	/*
-	fn print_equip_slot(slot: Option<Box<Equippable>>, name: &str) {
-		match slot {
-			Some(ref x) => format!("{}: {}", name, (*x).name()),
-			None => format!("{}: Nothing", name),
+
+	fn print_equip_slot(slot: &Option<Box<Equippable>>, name: &str) {
+		match *slot {
+			Some(ref x) => println!("{}: {}", name.to_string(), (*x).name()),
+			None => println!("{}: Nothing", name.to_string()),
 		}
 	}
-	*/
+
 	fn print_equipment(&self) {
-		//EquipSlots::print_equip_slot(self.right_hand, "Right Hand");
-		match self.right_hand {
-			Some(ref x) => println!("Right hand: {}", (*x).name()),
-			None => println!("Right hand: Nothing"),
-		}
-		match self.left_hand {
-			Some(ref x) => println!("Left hand: {}", (*x).name()),
-			None => println!("Left hand: Nothing"),
-		}
-		match self.head {
-			Some(ref x) => println!("Head: {}", (*x).name()),
-			None => println!("Head: Nothing"),
-		}
+		EquipSlots::print_equip_slot(&self.right_hand, "Right Hand");
+		EquipSlots::print_equip_slot(&self.left_hand, "Left Hand");
+		EquipSlots::print_equip_slot(&self.head, "Head");
+		EquipSlots::print_equip_slot(&self.chest, "Chest");
+		EquipSlots::print_equip_slot(&self.shoulders, "Shoulders");
+		EquipSlots::print_equip_slot(&self.hands, "Hands");
+		EquipSlots::print_equip_slot(&self.legs, "Legs");
+		EquipSlots::print_equip_slot(&self.feet, "Feet");
+		EquipSlots::print_equip_slot(&self.neck, "Neck");
+
 	}
 }
 
@@ -207,10 +204,20 @@ fn main() {
 		value: 23000,
 	};
 
+	let boots: Armor = Armor {
+		name: "Boots of Blinding Speed".to_string(),
+		armor: 9001,
+		slot: EquipSlotName::Feet,
+		text: "A blatant Morrowind reference.".to_string(),
+		value: 500,
+	};
+
 	//let sword: Weapon = Item::new();
 	let mut player = Player::new();
 	player.equip(Box::new(axe));
-	Player::equip(&mut player, Box::new(helm));
+	player.equip(Box::new(helm));
+	player.equip(Box::new(boots));
+
 
 	//player.pickup(Box::new(axe));
 	//let x = player.equipment.right_hand;
@@ -224,5 +231,5 @@ fn main() {
 		None => println!("Nothing Equipped"),
 	}
 	*/
-	
+
 }
