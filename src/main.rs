@@ -15,6 +15,7 @@ use item::ItemType::Equippable;
 fn main() {
 	let axe = weapon::new("Battleaxe", "An Axe.", RightHand, 12, 0.71, 1200);
 	let helm = armor::new("Dragon Helm", "A helm created from dragon bones.", Head, 36, 23000);
+	let sandals = armor::new("Sandals", "Maybe Jesus once owned these sandals.", Feet, 1, 9999);
 	let boots = armor::new("Boots of Blinding Speed", "A blatant Morrowind reference.", Feet, 9001, 500);
 	let mcguffin = Item::new("McGuffin of Lesser Plot", "The minor priestess Riella requires this post-haste!", 0, ItemType::None);
 	let mcguffin2 = Item::new("McGuffin of Greater Plot", "The major priestess Riellaja requires this post-haste!", 0, ItemType::None);
@@ -30,7 +31,7 @@ fn main() {
 
 	player.equip(axe);
 	player.equip(helm);
-	//player.equip(&boots);
+	player.equip(sandals);
 
 	player.pickup(mcguffin);
 	player.pickup(boots);
@@ -51,7 +52,9 @@ fn try_equip<'a>(player: &mut Player<'a>, index: usize) -> bool {
 	match *(player.inventory[index]).properties() {
 		Equippable(_,_) => {
 			let item = player.inventory.swap_remove(index);
-			(*player).equip(item);
+			if let Some(dropped) = (*player).equip(item) {
+				println!("Dropping {} on the ground!", dropped.name());
+			}
 			true
 		},
 		_ => {
