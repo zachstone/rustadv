@@ -67,6 +67,7 @@ impl EquipSlots {
 struct Player {
 	inventory: Vec<Box<Item>>,
 	equipment: EquipSlots,
+	coins: u32,
 }
 
 impl Player {
@@ -74,20 +75,46 @@ impl Player {
 		Player {
 			inventory: Vec::new(),
 			equipment: EquipSlots::new(),
+			coins: 0,
 		}
 	}
 
 	fn equip(&mut self, equipment: Box<Equippable>) {
+		use EquipSlotName::*;
+
 		match (*equipment).slot() {
-			EquipSlotName::RightHand => self.equipment.right_hand = Some(equipment),
-			EquipSlotName::LeftHand => self.equipment.left_hand = Some(equipment),
-			EquipSlotName::Head => self.equipment.head = Some(equipment),
-			EquipSlotName::Chest => self.equipment.chest = Some(equipment),
-			EquipSlotName::Shoulders => self.equipment.shoulders = Some(equipment),
-			EquipSlotName::Hands => self.equipment.hands = Some(equipment),
-			EquipSlotName::Legs => self.equipment.legs = Some(equipment),
-			EquipSlotName::Feet => self.equipment.feet = Some(equipment),
-			EquipSlotName::Neck => self.equipment.neck = Some(equipment),
+			RightHand => self.equipment.right_hand = Some(equipment),
+			LeftHand => self.equipment.left_hand = Some(equipment),
+			Head => self.equipment.head = Some(equipment),
+			Chest => self.equipment.chest = Some(equipment),
+			Shoulders => self.equipment.shoulders = Some(equipment),
+			Hands => self.equipment.hands = Some(equipment),
+			Legs => self.equipment.legs = Some(equipment),
+			Feet => self.equipment.feet = Some(equipment),
+			Neck => self.equipment.neck = Some(equipment),
+		}
+	}
+
+	fn pickup_if_exists(&self, item: Option<Box<Equippable>>) {
+		match item {
+			Some(x) => self.pickup(x),
+			None => (),
+		}
+	}
+
+	fn unequip(&self, equip_slot: EquipSlotName) {
+		use EquipSlotName::*;
+
+		match equip_slot {
+			RightHand => self.pickup_if_exists(self.equipment.right_hand),
+			LeftHand => self.inventory.push(self.equipment.left_hand),
+			Head => self.inventory.push(self.equipment.head),
+			Chest => self.inventory.push(self.equipment.chest),
+			Shoulders => self.inventory.push(self.equipment.shoulders),
+			Hands => self.inventory.push(self.equipment.hands),
+			Legs => self.inventory.push(self.equipment.legs),
+			Feet => self.inventory.push(self.equipment.feet),
+			Neck => self.inventory.push(self.equipment.neck),
 		}
 	}
 
@@ -97,11 +124,11 @@ impl Player {
 }
 
 trait Item {
+	fn name(&self) -> String;
 	fn examine(&self) -> String;
 }
 
-trait Equippable {
-	fn name(&self) -> String;
+trait Equippable : Item {
 	fn slot(&self) -> EquipSlotName;
 	//fn equip(&self, Player);
 	//fn price
@@ -119,16 +146,16 @@ struct Weapon {
 }
 
 impl Equippable for Weapon {
-	fn name(&self) -> String {
-		self.name.to_string()
-	}
-
 	fn slot(&self) -> EquipSlotName {
 		self.slot
 	}
 }
 
 impl Item for Weapon {
+	fn name(&self) -> String {
+		self.name.to_string()
+	}
+
 	fn examine(&self) -> String {
 		self.text.to_string()
 	}
@@ -145,16 +172,16 @@ struct Armor {
 }
 
 impl Equippable for Armor {
-	fn name(&self) -> String {
-		self.name.to_string()
-	}
-
 	fn slot(&self) -> EquipSlotName {
 		self.slot
 	}
 }
 
 impl Item for Armor {
+	fn name(&self) -> String {
+		self.name.to_string()
+	}
+
 	fn examine(&self) -> String {
 		self.text.to_string()
 	}
@@ -181,8 +208,9 @@ fn main() {
 	//let sword: Weapon = Item::new();
 	let mut player = Player::new();
 	player.equip(Box::new(axe));
-	player.equip(Box::new(helm));
-	//player.pickup(Item);
+	Player::equip(&mut player, Box::new(helm));
+
+	player.pickup(Box::new(axe));
 	//let x = player.equipment.right_hand;
 
 	player.equipment.print_equipment();
