@@ -1,9 +1,9 @@
-use item;
-use equip_slots::*;
-use equippable::*;
+use item::Item;
+use equip_slots::EquipSlots;
+use equippable::Equippable;
 
 pub struct Player<'a> {
-	pub inventory: Vec<Box<item::Item>>,
+	pub inventory: Vec<Box<Item>>,
 	pub equipment: EquipSlots<'a>,
 	pub coins: u32,
 }
@@ -58,7 +58,7 @@ impl<'a> Player<'a> {
 	}
 	*/
 
-	fn pickup(&mut self, item: Box<item::Item>) {
+	fn pickup(&mut self, item: Box<Item>) {
 		self.inventory.push(item);
 	}
 }

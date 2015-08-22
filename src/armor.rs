@@ -1,22 +1,22 @@
-use equip_slots;
-use item;
-use equippable;
+use equip_slots::EquipSlotName;
+use item::Item;
+use equippable::Equippable;
 
 pub struct Armor {
 	pub name: String,
 	pub armor: u32,
-	pub slot: equip_slots::EquipSlotName,
+	pub slot: EquipSlotName,
 	pub text: String,
 	pub value: u32,
 }
 
-impl equippable::Equippable for Armor {
-	fn slot(&self) -> equip_slots::EquipSlotName {
+impl Equippable for Armor {
+	fn slot(&self) -> EquipSlotName {
 		self.slot
 	}
 }
 
-impl item::Item for Armor {
+impl Item for Armor {
 	fn name(&self) -> String {
 		self.name.to_string()
 	}
