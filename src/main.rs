@@ -95,6 +95,7 @@ impl Player {
 		}
 	}
 
+	/*
 	fn pickup_if_exists(&self, item: Option<Box<Equippable>>) {
 		match item {
 			Some(x) => self.pickup(x),
@@ -106,7 +107,7 @@ impl Player {
 		use EquipSlotName::*;
 
 		match equip_slot {
-			RightHand => self.pickup_if_exists(self.equipment.right_hand),
+			RightHand => self.inventory.push(self.equipment.right_hand),
 			LeftHand => self.inventory.push(self.equipment.left_hand),
 			Head => self.inventory.push(self.equipment.head),
 			Chest => self.inventory.push(self.equipment.chest),
@@ -117,6 +118,7 @@ impl Player {
 			Neck => self.inventory.push(self.equipment.neck),
 		}
 	}
+	*/
 
 	fn pickup(&mut self, item: Box<Item>) {
 		self.inventory.push(item);
@@ -210,7 +212,7 @@ fn main() {
 	player.equip(Box::new(axe));
 	Player::equip(&mut player, Box::new(helm));
 
-	player.pickup(Box::new(axe));
+	//player.pickup(Box::new(axe));
 	//let x = player.equipment.right_hand;
 
 	player.equipment.print_equipment();
