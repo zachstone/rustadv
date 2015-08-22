@@ -8,33 +8,38 @@ mod armor;
 mod weapon;
 mod inventory;
 
+use player::Player;
+use armor::Armor;
+use equip_slots::EquipSlotName::*;
+use weapon::Weapon;
+
 fn main() {
-	let axe = weapon::Weapon {
+	let axe = Weapon {
 		name: "Battleaxe".to_string(),
 		damage: 12,
 		speed: 0.71,
-		slot: equip_slots::EquipSlotName::RightHand,
+		slot: RightHand,
 		text: "An Axe.".to_string(),
 		value: 1200,
 	};
 
-	let helm = armor::Armor {
+	let helm = Armor {
 		name: "Dragon Helm".to_string(),
 		armor: 36,
-		slot: equip_slots::EquipSlotName::Head,
+		slot: Head,
 		text: "A helm created from dragon bones.".to_string(),
 		value: 23000,
 	};
 
-	let boots = armor::Armor {
+	let boots = Armor {
 		name: "Boots of Blinding Speed".to_string(),
 		armor: 9001,
-		slot: equip_slots::EquipSlotName::Feet,
+		slot: Feet,
 		text: "A blatant Morrowind reference.".to_string(),
 		value: 500,
 	};
-
-	let mut player = player::Player::new();
+	
+	let mut player = Player::new();
 
 	player.equip(&axe);
 	player.equip(&helm);

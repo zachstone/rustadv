@@ -1,4 +1,4 @@
-use equippable::*;
+use equippable::Equippable;
 
 #[derive(Copy, Clone)]
 pub enum EquipSlotName {

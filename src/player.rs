@@ -1,12 +1,12 @@
-use item;
-use equip_slots::*;
-use equippable::*;
+use item::Item;
+use equip_slots::EquipSlots;
+use equippable::Equippable;
 use inventory::Inventory;
 
 pub struct Player<'a> {
 	pub inventory: Inventory<'a>,
 	pub equipment: EquipSlots<'a>,
-	pub coins: u32,
+	pub coins: u64,
 }
 
 impl<'a> Player<'a> {
@@ -59,7 +59,7 @@ impl<'a> Player<'a> {
 	}
 	*/
 
-	pub fn pickup(&mut self, item: &'a item::Item) {
+	pub fn pickup(&mut self, item: &'a Item) {
 		self.inventory.add(item);
 	}
 }
