@@ -2,50 +2,61 @@
 
 mod player;
 mod item;
-mod equippable;
 mod armor;
 mod weapon;
-mod inventory;
 
 use player::EquipSlotName::*;
 use player::Player;
-use armor::Armor;
-use weapon::Weapon;
+use player::Stats;
+use item::Item;
+use item::ItemType;
+use item::ItemType::Equippable;
 
 fn main() {
-	let axe = Weapon {
-		name: "Battleaxe".to_string(),
-		damage: 12,
-		speed: 0.71,
-		slot: RightHand,
-		text: "An Axe.".to_string(),
-		value: 1200,
-	};
+	let axe = weapon::new("Battleaxe", "An Axe.", RightHand, 12, 0.71, 1200);
+	let helm = armor::new("Dragon Helm", "A helm created from dragon bones.", Head, 36, 23000);
+	let boots = armor::new("Boots of Blinding Speed", "A blatant Morrowind reference.", Feet, 9001, 500);
+	let mcguffin = Item::new("McGuffin of Lesser Plot", "The minor priestess Riella requires this post-haste!", 0, ItemType::None);
+	let mcguffin2 = Item::new("McGuffin of Greater Plot", "The major priestess Riellaja requires this post-haste!", 0, ItemType::None);
 
-	let helm = Armor {
-		name: "Dragon Helm".to_string(),
-		armor: 36,
-		slot: Head,
-		text: "A helm created from dragon bones.".to_string(),
-		value: 23000,
-	};
+	let mut player = Player::new(Stats {
+		hp: 12,
+		dmg: 0,
+		apm: 0.0,
+		lib: 5,
+		hgt: 72,
+		car: 0,
+	});
 
-	let boots = Armor {
-		name: "Boots of Blinding Speed".to_string(),
-		armor: 9001,
-		slot: Feet,
-		text: "A blatant Morrowind reference.".to_string(),
-		value: 500,
-	};
-
-	let mut player = Player::new();
-
-	player.equip(&axe);
-	player.equip(&helm);
+	player.equip(axe);
+	player.equip(helm);
 	//player.equip(&boots);
 
-	player.pickup(&boots);
+	player.pickup(mcguffin);
+	player.pickup(boots);
+	player.pickup(mcguffin2);
 
+	let mut i = 0;
+	while i < player.inventory.len() {
+		if !try_equip(&mut player, i) {
+			i += 1;
+		}
+	}
 	player.print_equipment();
-	player.inventory.print_inventory();
+	player.print_inventory();
+}
+
+fn try_equip<'a>(player: &mut Player<'a>, index: usize) -> bool {
+	println!("Equipping {} from slot {}", player.inventory[index].name(), index);
+	match *(player.inventory[index]).properties() {
+		Equippable(_,_) => {
+			let item = player.inventory.swap_remove(index);
+			(*player).equip(item);
+			true
+		},
+		_ => {
+			println!("Can't equip {}!", player.inventory[index].name());
+			false
+		}
+	}
 }

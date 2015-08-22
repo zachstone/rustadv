@@ -1,28 +1,16 @@
 use player::EquipSlotName;
-use equippable::Equippable;
+use player::Stats;
+use item::ItemType::Equippable;
 use item::Item;
 
-pub struct Weapon {
-	pub name: String,
-	pub damage: u32,
-	pub speed: f32,
-	pub slot: EquipSlotName,
-	pub text: String,
-	pub value: u32,
-}
-
-impl Equippable for Weapon {
-	fn slot(&self) -> EquipSlotName {
-		self.slot
-	}
-}
-
-impl Item for Weapon {
-	fn name(&self) -> String {
-		self.name.to_string()
-	}
-
-	fn examine(&self) -> String {
-		self.text.to_string()
-	}
+pub fn new<'a>(name: &'a str, description: &'a str, slot: EquipSlotName, damage: u64, speed: f32, cost: u64) -> Item<'a> {
+	Item::new(name, description, cost,
+		Equippable (slot,
+			Stats {
+				dmg: damage,
+				apm: speed,
+				.. Stats::none()
+			}
+		)
+	)
 }
