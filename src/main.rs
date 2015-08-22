@@ -25,10 +25,19 @@ fn main() {
 		value: 23000,
 	};
 
+	let boots = armor::Armor {
+		name: "Boots of Blinding Speed".to_string(),
+		armor: 9001,
+		slot: equip_slots::EquipSlotName::Feet,
+		text: "A blatant Morrowind reference.".to_string(),
+		value: 500,
+	};
+
 	//let sword: Weapon = Item::new();
 	let mut player = player::Player::new();
 	player.equip(Box::new(axe));
 	player.equip(Box::new(helm));
+	player.equip(Box::new(boots));
 
 	//player.pickup(Box::new(axe));
 	//let x = player.equipment.right_hand;
