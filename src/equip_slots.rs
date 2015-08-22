@@ -1,4 +1,4 @@
-use equippable;
+use equippable::*;
 
 #[derive(Copy, Clone)]
 pub enum EquipSlotName {
@@ -13,20 +13,20 @@ pub enum EquipSlotName {
 	Neck,
 }
 
-pub struct EquipSlots {
-	pub right_hand: Option<Box<equippable::Equippable>>,
-	pub left_hand: Option<Box<equippable::Equippable>>,
-	pub head: Option<Box<equippable::Equippable>>,
-	pub chest: Option<Box<equippable::Equippable>>,
-	pub shoulders: Option<Box<equippable::Equippable>>,
-	pub hands: Option<Box<equippable::Equippable>>,
-	pub legs: Option<Box<equippable::Equippable>>,
-	pub feet: Option<Box<equippable::Equippable>>,
-	pub neck: Option<Box<equippable::Equippable>>,
+pub struct EquipSlots<'a> {
+	pub right_hand: Option<&'a Equippable>,
+	pub left_hand: Option<&'a Equippable>,
+	pub head: Option<&'a Equippable>,
+	pub chest: Option<&'a Equippable>,
+	pub shoulders: Option<&'a Equippable>,
+	pub hands: Option<&'a Equippable>,
+	pub legs: Option<&'a Equippable>,
+	pub feet: Option<&'a Equippable>,
+	pub neck: Option<&'a Equippable>,
 }
 
-impl EquipSlots {
-	pub fn new() -> EquipSlots {
+impl<'a> EquipSlots<'a> {
+	pub fn new() -> EquipSlots<'a> {
 		EquipSlots {
 			right_hand: None,
 			left_hand: None,
@@ -39,8 +39,8 @@ impl EquipSlots {
 			neck: None,
 		}
 	}
-	
-	fn print_equip_slot(slot: &Option<Box<equippable::Equippable>>, name: &str) {
+
+	fn print_equip_slot(slot: &Option<&Equippable>, name: &str) {
 		match *slot {
 			Some(ref x) => println!("{}: {}", name.to_string(), (*x).name()),
 			None => println!("{}: Nothing", name.to_string()),

@@ -1,23 +1,23 @@
 use item;
-use equip_slots;
-use equippable;
+use equip_slots::*;
+use equippable::*;
 
-pub struct Player {
+pub struct Player<'a> {
 	pub inventory: Vec<Box<item::Item>>,
-	pub equipment: equip_slots::EquipSlots,
+	pub equipment: EquipSlots<'a>,
 	pub coins: u32,
 }
 
-impl Player {
-	pub fn new() -> Player {
+impl<'a> Player<'a> {
+	pub fn new() -> Player<'a> {
 		Player {
 			inventory: Vec::new(),
-			equipment: equip_slots::EquipSlots::new(),
+			equipment: EquipSlots::new(),
 			coins: 0,
 		}
 	}
 
-	pub fn equip(&mut self, equipment: Box<equippable::Equippable>) {
+	pub fn equip(&mut self, equipment: &'a Equippable) {
 		use equip_slots::EquipSlotName::*;
 
 		match (*equipment).slot() {

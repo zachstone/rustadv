@@ -35,9 +35,9 @@ fn main() {
 
 	//let sword: Weapon = Item::new();
 	let mut player = player::Player::new();
-	player.equip(Box::new(axe));
-	player.equip(Box::new(helm));
-	player.equip(Box::new(boots));
+	player.equip(&axe);
+	player.equip(&helm);
+	player.equip(&boots);
 
 	//player.pickup(Box::new(axe));
 	//let x = player.equipment.right_hand;
