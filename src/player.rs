@@ -5,11 +5,11 @@ use std::collections::HashMap;
 
 pub struct Player<'a> {
 	pub inventory: Inventory<'a>,
-	pub equipped: HashMap<isize, &'a Equippable>,
+	pub equipped: HashMap<EquipSlotName, &'a Equippable>,
 	pub coins: u64,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum EquipSlotName {
 	RightHand,
 	LeftHand,
@@ -32,13 +32,15 @@ impl<'a> Player<'a> {
 	}
 
 	pub fn equip(&mut self, equipment: &'a Equippable) -> Option<&Equippable> {
-		let result = self.equipped.remove(&(equipment.slot() as isize));
-		self.equipped.insert(equipment.slot() as isize, equipment);
-		return result;
+		self.equipped.insert(equipment.slot(), equipment)
+	}
+
+	pub fn unequip(&mut self, slot: EquipSlotName) -> Option<&Equippable> {
+		self.equipped.remove(&slot)
 	}
 
 	fn get_equipment(&self, slot: EquipSlotName) -> Option<&Equippable> {
-		return match self.equipped.get(&(slot as isize)) {
+		match self.equipped.get(&slot) {
 			Some(&e) => Some(e),
 			None => None,
 		}
