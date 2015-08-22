@@ -1,37 +1,68 @@
 use item::Item;
-use equip_slots::EquipSlots;
 use equippable::Equippable;
 use inventory::Inventory;
+use std::collections::HashMap;
 
 pub struct Player<'a> {
 	pub inventory: Inventory<'a>,
-	pub equipment: EquipSlots<'a>,
+	pub equipped: HashMap<isize, &'a Equippable>,
 	pub coins: u64,
+}
+
+#[derive(Copy, Clone)]
+pub enum EquipSlotName {
+	RightHand,
+	LeftHand,
+	Head,
+	Chest,
+	Shoulders,
+	Hands,
+	Legs,
+	Feet,
+	Neck,
 }
 
 impl<'a> Player<'a> {
 	pub fn new() -> Player<'a> {
 		Player {
 			inventory: Inventory::new(),
-			equipment: EquipSlots::new(),
+			equipped: HashMap::new(),
 			coins: 0,
 		}
 	}
 
-	pub fn equip(&mut self, equipment: &'a Equippable) {
-		use equip_slots::EquipSlotName::*;
+	pub fn equip(&mut self, equipment: &'a Equippable) -> Option<&Equippable> {
+		let result = self.equipped.remove(&(equipment.slot() as isize));
+		self.equipped.insert(equipment.slot() as isize, equipment);
+		return result;
+	}
 
-		match (*equipment).slot() {
-			RightHand => self.equipment.right_hand = Some(equipment),
-			LeftHand => self.equipment.left_hand = Some(equipment),
-			Head => self.equipment.head = Some(equipment),
-			Chest => self.equipment.chest = Some(equipment),
-			Shoulders => self.equipment.shoulders = Some(equipment),
-			Hands => self.equipment.hands = Some(equipment),
-			Legs => self.equipment.legs = Some(equipment),
-			Feet => self.equipment.feet = Some(equipment),
-			Neck => self.equipment.neck = Some(equipment),
+	fn get_equipment(&self, slot: EquipSlotName) -> Option<&Equippable> {
+		return match self.equipped.get(&(slot as isize)) {
+			Some(&e) => Some(e),
+			None => None,
 		}
+	}
+
+	fn print_equip_slot(equipment: &Option<&Equippable>, name: &str) {
+		match *equipment {
+			Some(x) => println!("{}: {}", name.to_string(), (*x).name()),
+			None => println!("{}: Nothing", name.to_string()),
+		}
+	}
+
+	pub fn print_equipment(&self) {
+		use player::EquipSlotName::*;
+		Player::print_equip_slot(&self.get_equipment(RightHand), "Right Hand");
+		Player::print_equip_slot(&self.get_equipment(LeftHand), "Left Hand");
+		Player::print_equip_slot(&self.get_equipment(Head), "Head");
+		Player::print_equip_slot(&self.get_equipment(Chest), "Chest");
+		Player::print_equip_slot(&self.get_equipment(Shoulders), "Shoulders");
+		Player::print_equip_slot(&self.get_equipment(Hands), "Hands");
+		Player::print_equip_slot(&self.get_equipment(Legs), "Legs");
+		Player::print_equip_slot(&self.get_equipment(Feet), "Feet");
+		Player::print_equip_slot(&self.get_equipment(Neck), "Neck");
+
 	}
 
 	/*

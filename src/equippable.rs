@@ -1,4 +1,4 @@
-use equip_slots::EquipSlotName;
+use player::EquipSlotName;
 use item::Item;
 
 pub trait Equippable : Item {

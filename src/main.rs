@@ -1,16 +1,15 @@
 #![allow(dead_code)]
 
 mod player;
-mod equip_slots;
 mod item;
 mod equippable;
 mod armor;
 mod weapon;
 mod inventory;
 
+use player::EquipSlotName::*;
 use player::Player;
 use armor::Armor;
-use equip_slots::EquipSlotName::*;
 use weapon::Weapon;
 
 fn main() {
@@ -38,7 +37,7 @@ fn main() {
 		text: "A blatant Morrowind reference.".to_string(),
 		value: 500,
 	};
-	
+
 	let mut player = Player::new();
 
 	player.equip(&axe);
@@ -47,6 +46,6 @@ fn main() {
 
 	player.pickup(&boots);
 
-	//player.equipment.print_equipment();
+	player.print_equipment();
 	player.inventory.print_inventory();
 }

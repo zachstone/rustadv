@@ -1,4 +1,4 @@
-use equip_slots::EquipSlotName;
+use player::EquipSlotName;
 use equippable::Equippable;
 use item::Item;
 
