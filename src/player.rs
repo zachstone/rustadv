@@ -1,9 +1,10 @@
 use item;
 use equip_slots::*;
 use equippable::*;
+use inventory::Inventory;
 
 pub struct Player<'a> {
-	pub inventory: Vec<Box<item::Item>>,
+	pub inventory: Inventory<'a>,
 	pub equipment: EquipSlots<'a>,
 	pub coins: u32,
 }
@@ -11,7 +12,7 @@ pub struct Player<'a> {
 impl<'a> Player<'a> {
 	pub fn new() -> Player<'a> {
 		Player {
-			inventory: Vec::new(),
+			inventory: Inventory::new(),
 			equipment: EquipSlots::new(),
 			coins: 0,
 		}
@@ -41,8 +42,8 @@ impl<'a> Player<'a> {
 		}
 	}
 
-	fn unequip(&self, equip_slot: EquipSlotName) {
-		use EquipSlotName::*;
+	fn unequip(&self, equip_slot: equip_slots::EquipSlotName) {
+		use equip_slots::EquipSlotName::*;
 
 		match equip_slot {
 			RightHand => self.inventory.push(self.equipment.right_hand),
@@ -58,7 +59,7 @@ impl<'a> Player<'a> {
 	}
 	*/
 
-	fn pickup(&mut self, item: Box<item::Item>) {
-		self.inventory.push(item);
+	pub fn pickup(&mut self, item: &'a item::Item) {
+		self.inventory.add(item);
 	}
 }

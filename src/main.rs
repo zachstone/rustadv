@@ -6,6 +6,7 @@ mod item;
 mod equippable;
 mod armor;
 mod weapon;
+mod inventory;
 
 fn main() {
 	let axe = weapon::Weapon {
@@ -33,14 +34,14 @@ fn main() {
 		value: 500,
 	};
 
-	//let sword: Weapon = Item::new();
 	let mut player = player::Player::new();
+
 	player.equip(&axe);
 	player.equip(&helm);
-	player.equip(&boots);
+	//player.equip(&boots);
 
-	//player.pickup(Box::new(axe));
-	//let x = player.equipment.right_hand;
+	player.pickup(&boots);
 
-	player.equipment.print_equipment();
+	//player.equipment.print_equipment();
+	player.inventory.print_inventory();
 }
