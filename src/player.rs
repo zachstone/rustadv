@@ -5,7 +5,7 @@ use equippable::Equippable;
 pub struct Player<'a> {
 	pub inventory: Vec<Box<Item>>,
 	pub equipment: EquipSlots<'a>,
-	pub coins: u32,
+	pub coins: u64,
 }
 
 impl<'a> Player<'a> {
